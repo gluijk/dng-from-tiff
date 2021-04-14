@@ -41,7 +41,7 @@ echo Writing clean DNG to !resultDNG!.dng >> dngmaker.log
 echo.
 echo Creating DNG based on bayer.tif and the metadata from !firstFile!.dng using exiftool
 
-copy bayer.tif temp.dng
+copy bayer.tif temp.dng >> dngmaker.log
 
 exiftool -n^
  -IFD0:SubfileType#=0^
