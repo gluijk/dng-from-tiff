@@ -9,6 +9,7 @@ library(tiff)
 # PARAMETERS
 N=3  # number of RAW files to merge
 NAME="raw"  # RAW filenames
+OUTNAME="bayer"  # output composite name
 
 # Linear valid exposure range
 # NOTE: log2(MAX/MIN) must be >= bracketing EV intervals
@@ -88,7 +89,7 @@ for (i in 2:N) {
 
 if (max(hdr)<1) print(paste0("Output ETTR'ed by: +",
                              round(-log(max(hdr),2),2), "EV"))
-writeTIFF((hdr/max(hdr))^(1/gamma), "bayer.tif", bits.per.sample=16,
+writeTIFF((hdr/max(hdr))^(1/gamma), paste0(OUTNAME,".tif"), bits.per.sample=16,
           compression="none")
 
 # Fusion map and RAW data files contributions
@@ -99,10 +100,11 @@ for (i in 1:N) print(paste0("Contribution of ", NAME, i, ".tiff: ",
 
 
 
-# Bit decimation
+# Bit decimation (Optional)
 # 10, 12, 14 bits versions -> 0..1023, 0..4095, 0..16383 levels
 for (bits in seq(10,14,2)) {
     hdrdec=round(hdr/max(hdr)*(2^bits-1))  # round data into 2^bits int values
-    writeTIFF((hdrdec/max(hdrdec))^(1/gamma), paste0("bayer_",bits,"bits.tif"),
+    writeTIFF((hdrdec/max(hdrdec))^(1/gamma),
+              paste0(OUTNAME,"_",bits,"bits.tif"),
               bits.per.sample=16, compression="none")
 }
