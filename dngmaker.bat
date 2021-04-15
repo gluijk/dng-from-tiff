@@ -1,13 +1,14 @@
 @echo off
 
-echo ------------------------------------------------------------------------
+echo.
+echo ========================================================================
 echo                         D N G     M A K E R                               
 echo      (by Guillermo Luijk, based on Anton Wolf's DNG Stacker script)
 echo.
 echo   This script creates a valid Bayer DNG file from a Bayer TIFF image:
 echo     Step 1: Use exiftool to convert a Bayer TIFF into a DNG
 echo     Step 2: Use dng_validate to make the new DNG valid and compress it
-echo ------------------------------------------------------------------------
+echo ========================================================================
 echo.
 
 rem Any environment variable changes are lost at the end of the script
