@@ -1,0 +1,8 @@
+Improve some input metadata:
+  focallength -> Canon FDn 50mm f/1.4
+  whitelevel-> more accurate than original (16300)
+  baselineexposure-> input=0.35 but composite was built with 0
+
+exiftool -overwrite_original -focallength=50 raw1.dng raw2.dng raw3.dng
+exiftool -overwrite_original -whitelevel=16376 raw1.dng raw2.dng raw3.dng
+exiftool -overwrite_original -baselineexposure=0 raw1.dng raw2.dng raw3.dng
