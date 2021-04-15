@@ -8,8 +8,8 @@ library(tiff)
 
 # PARAMETERS
 N=3  # number of RAW files to merge
-NAME="raw"  # RAW filenames
-OUTNAME="bayer"  # output composite name
+NAME="raw"  # input RAW filenames
+OUTNAME="bayer"  # output RAW composite filename
 
 # Linear valid exposure range
 # NOTE: log2(MAX/MIN) must be >= bracketing EV intervals
