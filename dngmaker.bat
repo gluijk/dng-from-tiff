@@ -10,6 +10,7 @@ echo     Step 2: Use dng_validate to make the new DNG valid and compress it
 echo ------------------------------------------------------------------------
 echo.
 
+rem Any environment variable changes are lost at the end of the script
 SETLOCAL EnableDelayedExpansion
 
 rem Clean log and temp files from previous executions
