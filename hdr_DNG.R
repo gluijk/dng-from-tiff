@@ -23,7 +23,7 @@ gamma=1
 # READ RAW DATA
 
 # RAW files must be named: raw1.dng, raw2.dng,... from lower to higher exposure
-# RAW extraction using DCRAW: dcraw -v -d -r 1 1 1 1 -S 16376 -4 -T *.dng
+# RAW extraction using DCRAW: dcraw -v -d -r 1 1 1 1 -4 -T *.dng
 img=list()
 txt=list()
 for (i in 1:N) {
@@ -88,7 +88,7 @@ for (i in 2:N) {
 
 if (max(hdr)<1) print(paste0("Output ETTR'ed by: +",
                              round(-log(max(hdr),2),2), "EV"))
-writeTIFF((hdr/max(hdr))^(1/gamma), "hdr.tif", bits.per.sample=16,
+writeTIFF((hdr/max(hdr))^(1/gamma), "bayer.tif", bits.per.sample=16,
           compression="none")
 
 # Fusion map and RAW data files contributions
@@ -103,6 +103,6 @@ for (i in 1:N) print(paste0("Contribution of ", NAME, i, ".tiff: ",
 # 10, 12, 14 bits versions -> 0..1023, 0..4095, 0..16383 levels
 for (bits in seq(10,14,2)) {
     hdrdec=round(hdr/max(hdr)*(2^bits-1))  # round data into 2^bits int values
-    writeTIFF((hdrdec/max(hdrdec))^(1/gamma), paste0("hdr_",bits,"bits.tif"),
+    writeTIFF((hdrdec/max(hdrdec))^(1/gamma), paste0("bayer_",bits,"bits.tif"),
               bits.per.sample=16, compression="none")
 }
