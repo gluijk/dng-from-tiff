@@ -1,2 +1,2 @@
-# hdr-dng
-Building an HDR DNG RAW file using R, dng_validate and exiftol
+# dng-from-tiff
+Building DNG RAW files from Bayer TIFF data using R, dng_validate and exiftool
