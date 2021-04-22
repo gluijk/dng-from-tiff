@@ -73,6 +73,10 @@ exiftool -n^
  temp.dng >> dngmaker.log 2>>&1
 if errorlevel 1 goto err
 
+rem Replicate all colour-related metadata
+exiftool -tagsfromfile !firstFile!.dng "-IFD0:AnalogBalance" "-IFD0:ColorMatrix1" "-IFD0:ColorMatrix2" "-IFD0:CameraCalibration1" "-IFD0:CameraCalibration2" "-IFD0:AsShotNeutral" "-IFD0:BaselineExposure" "-IFD0:CalibrationIlluminant1" "-IFD0:CalibrationIlluminant2" "-IFD0:ForwardMatrix1" "-IFD0:ForwardMatrix2" temp.dng >> dngmaker.log 2>>&1
+if errorlevel 1 goto err
+
 del temp.xmp
 
 set resultDNG=!firstFile!-stack!numberOfFiles!
