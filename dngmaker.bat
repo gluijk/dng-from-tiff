@@ -16,7 +16,6 @@ SETLOCAL EnableDelayedExpansion
 
 rem Clean log and temp files from previous executions
 if exist dngmaker.log del dngmaker.log
-if exist temp.xmp del temp.xmp
 if exist temp.dng del temp.dng
 
 rem Determine number of files and the first file
@@ -27,8 +26,6 @@ for %%i in (*.dng) do (
 	if "!firstFile!"=="" set firstFile=%%~ni
 )
 echo !numberOfFiles! DNG files found, !firstFile!.dng metadata will be used
-
-exiftool -overwrite_original -ExposureTime=0 -ShutterSpeedValue=0 temp.xmp >> dngmaker.log 2>>&1
 
 echo Now it's time to make sure bayer.tif exists
 echo.
@@ -76,8 +73,6 @@ if errorlevel 1 goto err
 rem Replicate all colour-related metadata
 exiftool -overwrite_original -tagsfromfile !firstFile!.dng "-IFD0:AnalogBalance" "-IFD0:ColorMatrix1" "-IFD0:ColorMatrix2" "-IFD0:CameraCalibration1" "-IFD0:CameraCalibration2" "-IFD0:AsShotNeutral" "-IFD0:BaselineExposure" "-IFD0:CalibrationIlluminant1" "-IFD0:CalibrationIlluminant2" "-IFD0:ForwardMatrix1" "-IFD0:ForwardMatrix2" temp.dng >> dngmaker.log 2>>&1
 if errorlevel 1 goto err
-
-del temp.xmp
 
 set resultDNG=!firstFile!-stack!numberOfFiles!
 echo Writing composite DNG to !resultDNG!.dng using dng_validate
