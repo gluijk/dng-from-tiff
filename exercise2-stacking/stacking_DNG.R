@@ -1,8 +1,8 @@
-# Fusión HDR de archivos RAW con R
+# Building DNG RAW files from Bayer TIFF data
+# Exercise 2: average stacking
 # www.overfitting.net
-# https://www.overfitting.net/2018/07/fusion-hdr-de-imagenes-con-r.html
+# https://www.overfitting.net/2021/04/generando-un-raw-en-formato-dng-partir.html
 
-rm(list=ls())
 library(tiff)
 
 
@@ -27,6 +27,4 @@ img=img/N
 
 # BUILD OUTPUT DNG
 writeTIFF(img/max(img), paste0(OUTNAME,".tif"), bits.per.sample=16,
-          compression="none")
-writeTIFF(img, paste0(OUTNAME,".tif"), bits.per.sample=16,
           compression="none")
