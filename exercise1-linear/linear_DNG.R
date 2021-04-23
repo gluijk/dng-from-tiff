@@ -1,5 +1,5 @@
 # Building DNG RAW files from Bayer TIFF data
-# Exercise 2: linear light decomposition
+# Exercise 1: linear light decomposition
 # www.overfitting.net
 # https://www.overfitting.net/2021/04/generando-un-raw-en-formato-dng-partir.html
 
@@ -7,7 +7,7 @@ library(tiff)
 
 
 # PARAMETERS
-N=2  # number of RAW files
+N=2  # number of RAW files to process
 NAME="raw"  # input RAW filenames
 OUTNAME="bayer"  # output RAW composite filename
 
