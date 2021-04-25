@@ -18,6 +18,11 @@ rem Clean log and temp files from previous executions
 if exist dngmaker.log del dngmaker.log
 if exist temp.dng del temp.dng
 
+rem Extract RAW data from DNG files
+echo Extracting RAW data from DNG files using DCRAW...
+echo.
+dcraw -v -d -r 1 1 1 1 -t 0 -4 -T *.dng
+
 rem Determine number of files and the first file
 set numberOfFiles=0
 set firstFile=
@@ -25,7 +30,8 @@ for %%i in (*.dng) do (
 	set /a numberOfFiles+=1
 	if "!firstFile!"=="" set firstFile=%%~ni
 )
-echo !numberOfFiles! DNG files found, !firstFile!.dng metadata will be used
+echo.
+echo !numberOfFiles! DNG files found and extracted, !firstFile!.dng metadata will be used
 
 echo Now it's time to make sure bayer.tif exists
 echo.
@@ -77,6 +83,7 @@ if errorlevel 1 goto err
 set resultDNG=!firstFile!-stack!numberOfFiles!
 echo Writing composite DNG to !resultDNG!.dng using dng_validate
 dng_validate.exe -dng !resultDNG! temp.dng >> dngmaker.log 2>>&1
+if errorlevel 1 goto err
 
 del temp.dng
 
