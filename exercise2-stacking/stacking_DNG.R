@@ -14,7 +14,7 @@ OUTNAME="bayer"  # output RAW composite filename
 
 # READ RAW DATA
 
-# RAW extraction using DCRAW: dcraw -v -d -r 1 1 1 1 -4 -T *.dng
+# RAW extraction using DCRAW: dcraw -v -d -r 1 1 1 1 -t 0 -4 -T *.dng
 img=readTIFF(paste0(NAME, 18, ".tiff"), native=F, convert=F)
 for (i in 19:(19+N-2)) {
     img=img+readTIFF(paste0(NAME, i, ".tiff"), native=F, convert=F)
