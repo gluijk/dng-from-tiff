@@ -50,7 +50,7 @@ copy bayer.tif temp.dng >> dngmaker.log
 
 exiftool -n^
  -IFD0:SubfileType#=0^
- -overwrite_original -TagsFromFile !firstFile!.dng^
+ -overwrite_original -tagsfromfile !firstFile!.dng^
  "-all:all>all:all"^
  -DNGVersion^
  -DNGBackwardVersion^
