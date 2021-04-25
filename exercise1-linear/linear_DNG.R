@@ -15,7 +15,7 @@ OUTNAME="bayer"  # output RAW composite filename
 # READ RAW DATA
 
 # RAW files must be named: raw1.dng, raw2.dng
-# RAW extraction using DCRAW: dcraw -v -d -r 1 1 1 1 -4 -T *.dng
+# RAW extraction using DCRAW: dcraw -v -d -r 1 1 1 1 -t 0 -4 -T *.dng
 img=list()
 txt=list()
 for (i in 1:N) {
