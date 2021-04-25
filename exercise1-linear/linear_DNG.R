@@ -7,14 +7,15 @@ library(tiff)
 
 
 # PARAMETERS
-N=2  # number of RAW files to process
+N=3  # number of RAW files to process
 NAME="raw"  # input RAW filenames
 OUTNAME="bayer"  # output RAW composite filename
 
 
 # READ RAW DATA
 
-# RAW files must be named: raw1.dng, raw2.dng
+# RAW files must be named: raw1.dng (Ambiente + Artificial),
+# raw2.dng (Ambiente), raw3.dng (Artificial for check)
 # RAW extraction using DCRAW: dcraw -v -d -r 1 1 1 1 -t 0 -4 -T *.dng
 img=list()
 txt=list()
@@ -30,5 +31,15 @@ imag[imag<0]=0  # clip negative subtractions
 
 
 # BUILD OUTPUT DNG
+writeTIFF(imag, paste0(OUTNAME,".tif"), bits.per.sample=16,
+          compression="none")
+
+
+
+# Comparison composite (1/3, 1/3, 1/3)
+DIMTHIRD=as.integer(ncol(imag)/3)
+imag[,1:DIMTHIRD]=img[[1]][,3515:(3515+DIMTHIRD-1)]
+imag[,(DIMTHIRD+1):(2*DIMTHIRD)]=img[[2]][,3515:(3515+DIMTHIRD-1)]
+imag[,(2*DIMTHIRD+1):(3*DIMTHIRD)]=img[[3]][,3515:(3515+DIMTHIRD-1)]
 writeTIFF(imag, paste0(OUTNAME,".tif"), bits.per.sample=16,
           compression="none")
