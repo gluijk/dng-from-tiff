@@ -32,8 +32,7 @@ for %%i in (*.dng) do (
 )
 echo.
 echo !numberOfFiles! DNG files found and extracted, !firstFile!.dng metadata will be used
-
-echo Now it's time to make sure bayer.tif exists
+echo Now it's time to process the resulting TIFF files and build bayer.tif
 echo.
 pause
 
