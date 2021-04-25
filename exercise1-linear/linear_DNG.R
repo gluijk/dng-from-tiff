@@ -38,8 +38,9 @@ writeTIFF(imag, paste0(OUTNAME,".tif"), bits.per.sample=16,
 
 # Comparison composite (1/3, 1/3, 1/3)
 DIMTHIRD=as.integer(ncol(imag)/3)
-imag[,1:DIMTHIRD]=img[[1]][,3515:(3515+DIMTHIRD-1)]
-imag[,(DIMTHIRD+1):(2*DIMTHIRD)]=img[[2]][,3515:(3515+DIMTHIRD-1)]
-imag[,(2*DIMTHIRD+1):(3*DIMTHIRD)]=img[[3]][,3515:(3515+DIMTHIRD-1)]
+INITCOL=3515
+imag[,1:DIMTHIRD]=img[[1]][,INITCOL:(INITCOL+DIMTHIRD-1)]
+imag[,(DIMTHIRD+1):(2*DIMTHIRD)]=img[[2]][,INITCOL:(INITCOL+DIMTHIRD-1)]
+imag[,(2*DIMTHIRD+1):(3*DIMTHIRD)]=img[[3]][,INITCOL:(INITCOL+DIMTHIRD-1)]
 writeTIFF(imag, paste0(OUTNAME,".tif"), bits.per.sample=16,
           compression="none")
