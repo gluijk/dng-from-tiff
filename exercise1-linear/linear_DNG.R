@@ -18,11 +18,7 @@ OUTNAME="bayer"  # output RAW composite filename
 # raw2.dng (Ambiente), raw3.dng (Artificial for check)
 # RAW extraction using DCRAW: dcraw -v -d -r 1 1 1 1 -t 0 -4 -T *.dng
 img=list()
-txt=list()
-for (i in 1:N) {
-    img[[i]]=readTIFF(paste0(NAME, i, ".tiff"), native=F, convert=F)
-    txt[[i]]=paste0(NAME, i, "vs", NAME, i+1)
-}
+for (i in 1:N) img[[i]]=readTIFF(paste0(NAME, i, ".tiff"), native=F, convert=F)
 
 
 # LINEAR SUBTRACTION
