@@ -3,7 +3,6 @@
 # www.overfitting.net
 # https://www.overfitting.net/2021/04/generando-un-raw-en-formato-dng-partir.html
 
-rm(list=ls())
 library(tiff)
 
 
