@@ -52,8 +52,7 @@ exiftool -n^
  "-all:all>all:all"^
  -DNGVersion^
  -DNGBackwardVersion^
- -ColorMatrix1^
- -ColorMatrix2^
+ -ColorMatrix1 -ColorMatrix2^
  "-IFD0:BlackLevelRepeatDim<SubIFD:BlackLevelRepeatDim"^
  "-IFD0:PhotometricInterpretation<SubIFD:PhotometricInterpretation"^
  "-IFD0:CalibrationIlluminant1<SubIFD:CalibrationIlluminant1"^
