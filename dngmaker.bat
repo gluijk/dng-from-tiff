@@ -44,7 +44,7 @@ if not exist bayer.tif (
 echo.
 echo Creating DNG based on bayer.tif and the metadata from !firstFile!.dng using exiftool
 
-copy bayer.tif temp.dng >> dngmaker.log
+copy bayer.tif temp.dng >NUL
 
 exiftool -n^
  -IFD0:SubfileType#=0^
