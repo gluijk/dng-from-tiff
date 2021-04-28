@@ -20,10 +20,8 @@ for (i in 19:(19+N-2)) {
     img=img+readTIFF(paste0(NAME, i, ".tiff"), native=F, convert=F)
 }
 
-
 # MEAN AVERAGING
 img=img/N
-
 
 # BUILD OUTPUT DNG
 if (max(img)<1) print(paste0("Output ETTR'ed by: +",
@@ -38,6 +36,7 @@ writeTIFF(img/max(img), paste0(OUTNAME,".tif"), bits.per.sample=16,
 # https://stackoverflow.com/questions/34771088/why-is-standard-r-median-function-so-much-slower-than-a-simple-c-alternative
 
 library(Rcpp)
+library(microbenchmark)
 
 cppFunction('
 double cpp_med2(Rcpp::NumericVector xx) {
@@ -50,6 +49,13 @@ double cpp_med2(Rcpp::NumericVector xx) {
 }
 ')
 
+# Check equality and performance
+set.seed(123)
+x=rnorm(1e6)
+all.equal(median(x), cpp_med2(x))  # equality
+microbenchmark::microbenchmark(median(x), cpp_med2(x), times=200L)  # perform
+
+
 # READ RAW DATA
 
 # RAW extraction using DCRAW: dcraw -v -d -r 1 1 1 1 -t 0 -4 -T *.dng
@@ -59,14 +65,12 @@ for (i in 1:N) {
     img[,,i]=readTIFF(paste0(NAME, i+17, ".tiff"), native=F, convert=F)
 }
 
-
 # MEDIAN AVERAGING 
 # median: Time difference of 14.6095 mins
 # imag=apply(img, c(1,2), median)  # c(1,2) means 1st and 2nd dimensions
 
 # cpp_med2: Time difference of 1.206512 mins (~12 times faster)
 imag=apply(img, c(1,2), cpp_med2)  # c(1,2) means 1st and 2nd dimensions
-
 
 # BUILD OUTPUT DNG
 if (max(imag)<1) print(paste0("Output ETTR'ed by: +",
