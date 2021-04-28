@@ -20,16 +20,13 @@ OUTNAME="bayer"  # output RAW composite filename
 img=list()
 for (i in 1:N) img[[i]]=readTIFF(paste0(NAME, i, ".tiff"), native=F, convert=F)
 
-
 # LINEAR SUBTRACTION
 imag=img[[1]]-img[[2]]  # (Ambiente + Artificial) - Ambiente
 imag[imag<0]=0  # clip negative subtractions
 
-
 # BUILD OUTPUT DNG
 writeTIFF(imag, paste0(OUTNAME,".tif"), bits.per.sample=16,
           compression="none")
-
 
 
 # Comparison composite (1/3, 1/3, 1/3)
