@@ -32,7 +32,7 @@ writeTIFF(img/max(img), paste0(OUTNAME,".tif"), bits.per.sample=16,
 
 
 # Using median instead of mean
-# We improve the performance of R base mean with Rcpp code:
+# We improve the performance of R base median with Rcpp code:
 # https://stackoverflow.com/questions/34771088/why-is-standard-r-median-function-so-much-slower-than-a-simple-c-alternative
 
 library(Rcpp)
