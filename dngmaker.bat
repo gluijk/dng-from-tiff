@@ -46,6 +46,9 @@ echo Creating DNG based on bayer.tif and the metadata from !firstFile!.dng using
 
 copy bayer.tif temp.dng >NUL
 
+rem exiftool commands explanation:
+rem https://exiftool.org/forum/index.php?topic=12431.0
+
 exiftool -n^
  -IFD0:SubfileType#=0^
  -overwrite_original -tagsfromfile !firstFile!.dng^
