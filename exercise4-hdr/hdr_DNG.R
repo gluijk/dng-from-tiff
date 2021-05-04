@@ -1,5 +1,5 @@
 # Building DNG RAW files from Bayer TIFF data
-# Exercise 4: HDR
+# Exercise 4: RAW HDR
 # www.overfitting.net
 # https://www.overfitting.net/2021/05/raw-hdr.html
 
