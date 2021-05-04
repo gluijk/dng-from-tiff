@@ -59,7 +59,6 @@ if (max(imag)<1) print(paste0("Output ETTR'ed by: +",
 writeTIFF(imag/max(imag), paste0(OUTNAME,".tif"), bits.per.sample=16,
           compression="none")
 
-
 # Fusion map and RAW data files contributions
 mapafusion=imag*0
 for (i in 1:N) {
