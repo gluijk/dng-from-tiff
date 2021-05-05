@@ -1,0 +1,19 @@
+With exiftool we can improve some input metadata:
+  focallength -> Canon FDn 50mm f/1.4
+  whitelevel -> more accurate than original (16300 -> 16376)
+  baselineexposure -> input=0.35
+
+exiftool -overwrite_original -focallength=50 *.dng
+exiftool -overwrite_original -whitelevel=16376 *.dng
+exiftool -overwrite_original -baselineexposure=0 *.dng
+
+
+To obtain the whole sensor area (Sony A7 II):
+
+Image Width                     : 6048
+Image Height                    : 4024
+Default Crop Origin             : 12 12
+Default Crop Size               : 6000 4000
+
+exiftool -overwrite_original -DefaultCropOrigin="0 0" *.dng
+exiftool -overwrite_original -DefaultCropSize="6048 4024" *.dng
