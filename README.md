@@ -1,2 +1,2 @@
 # dng-from-tiff
-Building DNG RAW files from Bayer TIFF data using R, dng_validate and exiftool
+Building DNG RAW files from Bayer TIFF data using R, exiftool and dng_validate
