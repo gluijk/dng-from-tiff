@@ -5,16 +5,8 @@
 
 library(tiff)
 
-
-# PARAMETERS
-N=5  # number of RAW files to merge
-NAME="raw"  # input RAW filenames
-OUTNAME="bayer"  # output RAW composite filename
-
-
 # Improve the performance of the R median function with this C++ code:
 # https://stackoverflow.com/questions/34771088/why-is-standard-r-median-function-so-much-slower-than-a-simple-c-alternative
-
 library(Rcpp)
 library(microbenchmark)
 
@@ -34,6 +26,12 @@ set.seed(123)
 x=rnorm(1e6)
 all.equal(median(x), cpp_med2(x))  # equality
 microbenchmark::microbenchmark(median(x), cpp_med2(x), times=200L)  # perform
+
+
+# PARAMETERS
+N=5  # number of RAW files to merge
+NAME="raw"  # input RAW filenames
+OUTNAME="bayer"  # output RAW composite filename
 
 
 # READ RAW DATA
