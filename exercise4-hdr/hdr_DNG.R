@@ -75,7 +75,7 @@ for (i in 1:(N-1)) {
     solape[i]=length(indices[[i]])/length(img[[i]])  # % of data participating
 }
 print("Data participating in relative exposure calculation (%):")
-print(round(solape*100,2))
+print(round(solape*100,1))
 
 
 # BUILD HDR COMPOSITE
@@ -96,7 +96,7 @@ writeTIFF((hdr/max(hdr))^(1/gamma), paste0(OUTNAME,".tif"), bits.per.sample=16,
 writeTIFF(1-(mapafusion-1)/(N-1), "mapafusion.tif", # grayscale fusion map
           bits.per.sample=8, compression="LZW")
 for (i in 1:N) print(paste0("Contribution of ", NAME, i, ".tiff: ",
-            round(length(which(mapafusion==i))/length(mapafusion)*100,2),"%"))
+            round(length(which(mapafusion==i))/length(mapafusion)*100,1),"%"))
 
 
 
