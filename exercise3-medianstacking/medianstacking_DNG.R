@@ -7,18 +7,19 @@ library(tiff)
 
 # Improve the performance of the R median function with this C++ code:
 # https://stackoverflow.com/questions/34771088/why-is-standard-r-median-function-so-much-slower-than-a-simple-c-alternative
+
 library(Rcpp)
 library(microbenchmark)
 
 cppFunction('
-double cpp_med2(Rcpp::NumericVector xx) {
-    Rcpp::NumericVector x = Rcpp::clone(xx);
-    std::size_t n = x.size() / 2;
-    std::nth_element(x.begin(), x.begin() + n, x.end());
-    if (x.size() % 2) return x[n]; 
-    return (x[n] + *std::max_element(x.begin(), x.begin() + n)) / 2.;
-}
-')
+            double cpp_med2(Rcpp::NumericVector xx) {
+            Rcpp::NumericVector x = Rcpp::clone(xx);
+            std::size_t n = x.size() / 2;
+            std::nth_element(x.begin(), x.begin() + n, x.end());
+            if (x.size() % 2) return x[n]; 
+            return (x[n] + *std::max_element(x.begin(), x.begin() + n)) / 2.;
+            }
+            ')
 
 # Check equality and performance
 set.seed(123)
