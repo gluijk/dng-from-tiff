@@ -16,16 +16,28 @@ cppFunction('
             Rcpp::NumericVector x = Rcpp::clone(xx);
             std::size_t n = x.size() / 2;
             std::nth_element(x.begin(), x.begin() + n, x.end());
+            
             if (x.size() % 2) return x[n]; 
-            return (x[n] + *std::max_element(x.begin(), x.begin() + n)) / 2.;
+            return (*std::max_element(x.begin(), x.begin() + n) + x[n]) / 2.;
+            }
+            ')
+
+# This version is faster but modifies the input vector
+cppFunction('
+            double cpp_med3(Rcpp::NumericVector x) {
+            std::size_t n = x.size() / 2;
+            std::nth_element(x.begin(), x.begin() + n, x.end());
+            
+            if (x.size() % 2) return x[n]; 
+            return (*std::max_element(x.begin(), x.begin() + n) + x[n]) / 2.;
             }
             ')
 
 # Check equality and performance
 set.seed(123)
 x=rnorm(1e6)
-all.equal(median(x), cpp_med2(x))  # equality
-microbenchmark::microbenchmark(median(x), cpp_med2(x), times=200L)  # perform
+all.equal(median(x), cpp_med2(x), cpp_med3(x))  # equality
+microbenchmark::microbenchmark(median(x), cpp_med2(x), cpp_med3(x), times=200L)  # perform
 
 
 # PARAMETERS
@@ -50,6 +62,9 @@ for (i in 1:N) {
 # cpp_med2: Time difference of 1.206512 mins (~12 times faster)
 imag=apply(img, c(1,2), cpp_med2)  # c(1,2) means 1st and 2nd dimensions
 
+# cpp_med3: Time difference of 58.98304 secs (a bit faster than cpp_med2)
+# imag=apply(img, c(1,2), cpp_med3)  # c(1,2) means 1st and 2nd dimensions
+
 
 # BUILD OUTPUT DNG
 if (max(imag)<1) print(paste0("Output ETTR'ed by: +",
@@ -57,13 +72,13 @@ if (max(imag)<1) print(paste0("Output ETTR'ed by: +",
 writeTIFF(imag/max(imag), paste0(OUTNAME,".tif"), bits.per.sample=16,
           compression="none")
 
-# Fusion map and RAW data files contributions
+# Fusion map and RAW data files contributions (cpp_med3 cannot be used)
 mapafusion=imag*0
 for (i in 1:N) {
     indices=which(imag==img[,,i])
     mapafusion[indices]=i
 }
-writeTIFF((mapafusion-1)/(N-1), "mapafusion.tif",  # grayscale fusion map
+writeTIFF((mapafusion-1)/(N-1), "mapafusion.tif", # grayscale fusion map
           bits.per.sample=8, compression="LZW")
 for (i in 1:N) print(paste0("Contribution of ", NAME, i, ".tiff: ",
           round(length(which(mapafusion==i))/length(mapafusion)*100,2),"%"))
