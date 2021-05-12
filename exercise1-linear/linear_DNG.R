@@ -54,7 +54,7 @@ imag3[i+NROW]=imag3[i+NROW]*mulart[2]      # G1
 imag3[i+1]=imag3[i+1]*mulart[2]            # G2
 imag3[i+NROW+1]=imag3[i+NROW+1]*mulart[3]  # B
 
-imag3=imag3+img[[2]]
+imag3=imag3+img[[2]]  # scaled Artificial + Ambiente
 imag3[imag3>1]=1
 
 # BUILD OUTPUT DNG
