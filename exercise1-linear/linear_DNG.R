@@ -30,10 +30,33 @@ writeTIFF(imag, paste0(OUTNAME,".tif"), bits.per.sample=16,
 
 
 # Comparison composite (1/3, 1/3, 1/3)
-DIMTHIRD=as.integer(ncol(imag)/3)
+imag2=imag
+DIMTHIRD=as.integer(ncol(imag2)/3)
 INITCOL=3515
-imag[,1:DIMTHIRD]=img[[1]][,INITCOL:(INITCOL+DIMTHIRD-1)]
-imag[,(DIMTHIRD+1):(2*DIMTHIRD)]=img[[2]][,INITCOL:(INITCOL+DIMTHIRD-1)]
-imag[,(2*DIMTHIRD+1):(3*DIMTHIRD)]=img[[3]][,INITCOL:(INITCOL+DIMTHIRD-1)]
-writeTIFF(imag, paste0(OUTNAME,".tif"), bits.per.sample=16,
+imag2[,1:DIMTHIRD]=img[[1]][,INITCOL:(INITCOL+DIMTHIRD-1)]
+imag2[,(DIMTHIRD+1):(2*DIMTHIRD)]=img[[2]][,INITCOL:(INITCOL+DIMTHIRD-1)]
+imag2[,(2*DIMTHIRD+1):(3*DIMTHIRD)]=img[[3]][,INITCOL:(INITCOL+DIMTHIRD-1)]
+writeTIFF(imag2, paste0(OUTNAME,"_composite.tif"), bits.per.sample=16,
+          compression="none")
+
+
+# COLOUR TEMPERATURE EQUALIZATION
+wb=readTIFF("relativewb.tif", native=F, convert=F)  # 2 wall reference pixels
+wb[1,1,]=wb[1,1,]/max(wb[1,1,])
+wb[1,2,]=wb[1,2,]/max(wb[1,2,])
+mulart=wb[1,1,]/wb[1,2,]  # linear colour temperature difference
+
+imag3=imag
+NROW=nrow(imag3)
+i=which(row(imag3)%%2 & col(imag3)%%2)
+imag3[i]=imag3[i]*mulart[1]                # R photosites
+imag3[i+NROW]=imag3[i+NROW]*mulart[2]      # G1
+imag3[i+1]=imag3[i+1]*mulart[2]            # G2
+imag3[i+NROW+1]=imag3[i+NROW+1]*mulart[3]  # B
+
+imag3=imag3+img[[2]]
+imag3[imag3>1]=1
+
+# BUILD OUTPUT DNG
+writeTIFF(imag3, paste0(OUTNAME,"_whitebalanced.tif"), bits.per.sample=16,
           compression="none")
