@@ -1,7 +1,7 @@
 # Building DNG RAW files from Bayer TIFF data
-# Exercise 5: RAW subsampling contact sheet
+# Exercise 5: RAW contact sheet
 # www.overfitting.net
-# https://www.overfitting.net/2021/04/generando-un-raw-en-formato-dng-partir.html
+# https://www.overfitting.net/2021/05/creando-una-hoja-de-contactos-en-raw.html
 
 library(tiff)
 
