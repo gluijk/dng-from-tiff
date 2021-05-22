@@ -35,7 +35,7 @@ for (k in 1:N) {
     
     OFFSETROW=NROW*as.integer((k-1)/DIEZMADO)
     OFFSETCOL=NCOL*(k-1)%%DIEZMADO
-    imag[(1+OFFSETROW):(NROW+OFFSETROW),(1+OFFSETCOL):(NCOL+OFFSETCOL)]=tmp
+    imag[1:NROW+OFFSETROW,1:NCOL+OFFSETCOL]=tmp
 }
 
 
