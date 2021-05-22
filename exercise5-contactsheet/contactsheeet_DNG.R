@@ -52,3 +52,6 @@ if (max(imag)<1) print(paste0("Output ETTR'ed by: +",
 writeTIFF((imag/max(imag)), paste0(OUTNAME,".tif"), bits.per.sample=16,
           compression="none")
 
+# Set DNG effective size to 6048x4024 (same as DCRAW output):
+# exiftool -overwrite_original -DefaultOrigin="0 0" rawcontactsheet.dng
+# exiftool -overwrite_original -DefaultCropSize="6048 4024" rawcontactsheet.dng
