@@ -39,6 +39,10 @@ imag2[,(2*DIMTHIRD+1):(3*DIMTHIRD)]=img[[3]][,INITCOL:(INITCOL+DIMTHIRD-1)]
 writeTIFF(imag2, paste0(OUTNAME,"_composite.tif"), bits.per.sample=16,
           compression="none")
 
+# Set DNG effective size to 6048x4024 (same as DCRAW output):
+# exiftool -overwrite_original -DefaultOrigin="0 0" rawcomposite.dng
+# exiftool -overwrite_original -DefaultCropSize="6048 4024" rawcomposite.dng
+
 
 # COLOUR TEMPERATURE EQUALIZATION
 wb=readTIFF("relativewb.tif", native=F, convert=F)  # 2 wall reference pixels
