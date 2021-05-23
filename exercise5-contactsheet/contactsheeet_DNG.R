@@ -29,15 +29,15 @@ for (k in 1:N) {
     img=readTIFF(paste0(NAME, k, ".tiff"), native=F, convert=F, as.is=TRUE)
     
     # Basic Bayer subsampling
-    # tmp[j]=img[i]  # R
-    # tmp[j+NROW]=img[i+NROW*DIEZMADO]  # G1
-    # tmp[j+1]=img[i+1]  # G2
+    # tmp[j]=img[i]                         # R
+    # tmp[j+NROW]=img[i+NROW*DIEZMADO]      # G1
+    # tmp[j+1]=img[i+1]                     # G2
     # tmp[j+NROW+1]=img[i+NROW*DIEZMADO+1]  # B
     
     # Improved spatial Bayer subsampling (reduces pixelation)
-    tmp[j]=img[i]  # R
-    tmp[j+NROW]=img[i+NROW*DIEZMADO*(DIEZMADO-1)]  # G1
-    tmp[j+1]=img[i+DIEZMADO-1]  # G2
+    tmp[j]=img[i]                                               # R
+    tmp[j+NROW]=img[i+NROW*DIEZMADO*(DIEZMADO-1)]               # G1
+    tmp[j+1]=img[i+DIEZMADO-1]                                  # G2
     tmp[j+NROW+1]=img[i+NROW*DIEZMADO*(DIEZMADO-1)+DIEZMADO-1]  # B
     
     OFFSETROW=NROW*as.integer((k-1)/DIEZMADO)
