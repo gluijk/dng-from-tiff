@@ -7,7 +7,8 @@ library(tiff)
 
 
 # PARAMETERS
-N=16  # number of RAW files to merge
+DIEZMADO=5  # 4
+N=DIEZMADO^2  # number of RAW files to merge
 NAME="raw"  # input RAW filenames
 OUTNAME="bayer"  # output RAW composite filename
 
@@ -16,17 +17,24 @@ OUTNAME="bayer"  # output RAW composite filename
 # RAW files must be named: raw1.dng, raw2.dng,...
 # RAW extraction using DCRAW: dcraw -v -d -r 1 1 1 1 -4 -T *.dng
 imag=readTIFF(paste0(NAME, 1, ".tiff"), native=F, convert=F, as.is=TRUE)*0
-DIEZMADO=4
-NROW=nrow(imag)/DIEZMADO
-NCOL=ncol(imag)/DIEZMADO
+NROW=as.integer(nrow(imag)/DIEZMADO)
+NCOL=as.integer(ncol(imag)/DIEZMADO)
 
-tmp=array(0,c(NROW,NCOL))  # temporary array
+# Always even dimensions (Bayer multiple)
+if ((NROW%%2)==1) NROW=NROW-1
+if ((NCOL%%2)==1) NCOL=NCOL-1L
+
+    
+imagcrop=array(0,c(NROW*DIEZMADO,NCOL*DIEZMADO))
+tmp=array(0,c(NROW,NCOL))  # NROW x NCOL temporary array
 
 # Precalculated indexes
-i=which((row(imag)-1)%%(DIEZMADO*2)==0 & (col(imag)-1)%%(DIEZMADO*2)==0)
+i=which((row(imagcrop)-1)%%(DIEZMADO*2)==0 & (col(imagcrop)-1)%%(DIEZMADO*2)==0)
 j=which(row(tmp)%%2 & col(tmp)%%2)
+
 for (k in 1:N) {
     img=readTIFF(paste0(NAME, k, ".tiff"), native=F, convert=F, as.is=TRUE)
+    img=img[1:nrow(imagcrop), 1:ncol(imagcrop)]
     
     # Basic Bayer subsampling
     # tmp[j]=img[i]                         # R
@@ -35,21 +43,28 @@ for (k in 1:N) {
     # tmp[j+NROW+1]=img[i+NROW*DIEZMADO+1]  # B
     
     # Improved spatial Bayer subsampling (reduces pixelation)
-    tmp[j]=img[i]                                               # R
-    tmp[j+NROW]=img[i+NROW*DIEZMADO*(DIEZMADO-1)]               # G1
-    tmp[j+1]=img[i+DIEZMADO-1]                                  # G2
-    tmp[j+NROW+1]=img[i+NROW*DIEZMADO*(DIEZMADO-1)+DIEZMADO-1]  # B
-    
+    if (DIEZMADO%%2) {  # odd decimation
+        tmp[j]=img[i]                                                   # R
+        tmp[j+NROW]=img[i+(NROW*DIEZMADO)*DIEZMADO]                     # G1
+        tmp[j+1]=img[i+DIEZMADO]                                        # G2
+        tmp[j+NROW+1]=img[i+(NROW*DIEZMADO)*DIEZMADO+DIEZMADO]          # B
+    } else {  # even decimation
+        tmp[j]=img[i]                                                   # R
+        tmp[j+NROW]=img[i+(NROW*DIEZMADO)*(DIEZMADO-1)]                 # G1
+        tmp[j+1]=img[i+DIEZMADO-1]                                      # G2
+        tmp[j+NROW+1]=img[i+(NROW*DIEZMADO)*(DIEZMADO-1)+(DIEZMADO-1)]  # B
+    }
+
     OFFSETROW=NROW*as.integer((k-1)/DIEZMADO)
     OFFSETCOL=NCOL*(k-1)%%DIEZMADO
-    imag[1:NROW+OFFSETROW,1:NCOL+OFFSETCOL]=tmp
+    imagcrop[1:NROW+OFFSETROW,1:NCOL+OFFSETCOL]=tmp
 }
+
+imag[1:nrow(imagcrop), 1:ncol(imagcrop)]=imagcrop
 
 
 # BUILD OUTPUT DNG
-if (max(imag)<1) print(paste0("Output ETTR'ed by: +",
-                             round(-log(max(imag),2),2), "EV"))
-writeTIFF((imag/max(imag)), paste0(OUTNAME,".tif"), bits.per.sample=16,
+writeTIFF(imag/65535, paste0(OUTNAME,".tif"), bits.per.sample=16,
           compression="none")
 
 # Set DNG effective size to 6048x4024 (same as DCRAW output):
