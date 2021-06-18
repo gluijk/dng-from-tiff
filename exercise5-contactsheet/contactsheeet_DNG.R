@@ -51,7 +51,7 @@ for (k in 1:N) {
     } else {  # even decimation
         tmp[j]=img[i]                                                   # R
         tmp[j+NROW]=img[i+(NROW*DIEZMADO)*(DIEZMADO-1)]                 # G1
-        tmp[j+1]=img[i+DIEZMADO-1]                                      # G2
+        tmp[j+1]=img[i+(DIEZMADO-1)]                                    # G2
         tmp[j+NROW+1]=img[i+(NROW*DIEZMADO)*(DIEZMADO-1)+(DIEZMADO-1)]  # B
     }
 
