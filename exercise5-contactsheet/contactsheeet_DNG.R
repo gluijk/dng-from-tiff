@@ -7,7 +7,7 @@ library(tiff)
 
 
 # PARAMETERS
-DIEZMADO=5  # 4
+DIEZMADO=5  # 1D decimation
 N=DIEZMADO^2  # number of RAW files to merge
 NAME="raw"  # input RAW filenames
 OUTNAME="bayer"  # output RAW composite filename
@@ -21,10 +21,10 @@ NROW=as.integer(nrow(imag)/DIEZMADO)
 NCOL=as.integer(ncol(imag)/DIEZMADO)
 
 # Always even dimensions (Bayer multiple)
-if ((NROW%%2)==1) NROW=NROW-1
+if ((NROW%%2)==1) NROW=NROW-1L
 if ((NCOL%%2)==1) NCOL=NCOL-1L
 
-    
+
 imagcrop=array(0,c(NROW*DIEZMADO,NCOL*DIEZMADO))
 tmp=array(0,c(NROW,NCOL))  # NROW x NCOL temporary array
 
