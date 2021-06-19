@@ -6,23 +6,24 @@
 library(tiff)
 
 
+# RAW extraction using DCRAW: dcraw -v -d -r 1 1 1 1 -4 -T *.dng
+filenames=dir(pattern="*.tiff")
+N=length(filenames)
+DIEZMADO=ceiling(N^0.5)
+
+
 # PARAMETERS
-DIEZMADO=5  # 1D decimation
-N=DIEZMADO^2  # number of RAW files to merge
-NAME="raw"  # input RAW filenames
 OUTNAME="bayer"  # output RAW composite filename
 
-# READ RAW DATA
 
-# RAW files must be named: raw1.dng, raw2.dng,...
-# RAW extraction using DCRAW: dcraw -v -d -r 1 1 1 1 -4 -T *.dng
-imag=readTIFF(paste0(NAME, 1, ".tiff"), native=F, convert=F, as.is=TRUE)*0
+# READ RAW DATA
+imag=readTIFF(filenames[1], native=F, convert=F)*0
 NROW=as.integer(nrow(imag)/DIEZMADO)
 NCOL=as.integer(ncol(imag)/DIEZMADO)
 
 # Always even dimensions (Bayer multiple)
-if (NROW%%2) NROW=NROW-1L
-if (NCOL%%2) NCOL=NCOL-1L
+if (NROW%%2==1) NROW=NROW-1L
+if (NCOL%%2==1) NCOL=NCOL-1L
 
 
 imagcrop=array(0,c(NROW*DIEZMADO,NCOL*DIEZMADO))
@@ -33,7 +34,10 @@ i=which((row(imagcrop)-1)%%(DIEZMADO*2)==0 & (col(imagcrop)-1)%%(DIEZMADO*2)==0)
 j=which(row(tmp)%%2 & col(tmp)%%2)
 
 for (k in 1:N) {
-    img=readTIFF(paste0(NAME, k, ".tiff"), native=F, convert=F, as.is=TRUE)
+    print(paste0("Processing file '", filenames[k], "' (", k, "/", N,
+                 ") ..."), quote=FALSE)
+    
+    img=readTIFF(filenames[k], native=F, convert=F)  # as.is=TRUE
     img=img[1:nrow(imagcrop), 1:ncol(imagcrop)]
     
     # Basic Bayer subsampling
@@ -51,7 +55,7 @@ for (k in 1:N) {
     } else {  # even decimation
         tmp[j]=img[i]                                                   # R
         tmp[j+NROW]=img[i+(NROW*DIEZMADO)*(DIEZMADO-1)]                 # G1
-        tmp[j+1]=img[i+(DIEZMADO-1)]                                    # G2
+        tmp[j+1]=img[i+DIEZMADO-1]                                      # G2
         tmp[j+NROW+1]=img[i+(NROW*DIEZMADO)*(DIEZMADO-1)+(DIEZMADO-1)]  # B
     }
 
@@ -64,7 +68,7 @@ imag[1:nrow(imagcrop), 1:ncol(imagcrop)]=imagcrop
 
 
 # BUILD OUTPUT DNG
-writeTIFF(imag/65535, paste0(OUTNAME,".tif"), bits.per.sample=16,
+writeTIFF(imag, paste0(OUTNAME,".tif"), bits.per.sample=16,
           compression="none")
 
 # Set DNG effective size to 6048x4024 (same as DCRAW output):
