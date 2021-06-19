@@ -22,8 +22,8 @@ NROW=as.integer(nrow(imag)/DIEZMADO)
 NCOL=as.integer(ncol(imag)/DIEZMADO)
 
 # Always even dimensions (Bayer multiple)
-if (NROW%%2==1) NROW=NROW-1L
-if (NCOL%%2==1) NCOL=NCOL-1L
+if (NROW%%2) NROW=NROW-1L
+if (NCOL%%2) NCOL=NCOL-1L
 
 
 imagcrop=array(0,c(NROW*DIEZMADO,NCOL*DIEZMADO))
