@@ -30,7 +30,7 @@ imagcrop=array(0,c(NROW*DIEZMADO,NCOL*DIEZMADO))
 tmp=array(0,c(NROW,NCOL))  # NROW x NCOL temporary array
 
 # Precalculated indexes
-i=which((row(imagcrop)-1)%%(DIEZMADO*2)==0 & (col(imagcrop)-1)%%(DIEZMADO*2)==0)
+i=which(!(row(imagcrop)-1)%%(DIEZMADO*2) & !(col(imagcrop)-1)%%(DIEZMADO*2))
 j=which(row(tmp)%%2 & col(tmp)%%2)
 
 for (k in 1:N) {
