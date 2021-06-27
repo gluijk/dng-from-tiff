@@ -40,29 +40,29 @@ for (i in 1:N) {
 }
 
 # MEAN AVERAGING 
-# imag=apply(img, c(1,2), mean)  # c(1,2) means 1st and 2nd dimensions
+# dark=apply(img, c(1,2), mean)  # c(1,2) means 1st and 2nd dimensions
 
 # MEDIAN AVERAGING 
-imag=apply(img, c(1,2), cpp_med2)  # c(1,2) means 1st and 2nd dimensions
+dark=apply(img, c(1,2), cpp_med2)  # c(1,2) means 1st and 2nd dimensions
 
-hist(imag, breaks=1200, ylim=c(0,30000),
+hist(dark, breaks=1200, ylim=c(0,30000),
      main='darkframe', xlab='RAW level')
 abline(v=BLACK, col='red', lty='dotted')
 
-hist(imag[imag<=2000], breaks=1200, ylim=c(0,15000),
+hist(dark[dark<=2000], breaks=1200, ylim=c(0,15000),
      main='darkframe', xlab='RAW level')
 abline(v=BLACK, col='red', lty='dotted')
 
 
 # DARKFRAME SUBTRACTION
 img=readTIFF(paste0(NAME, 0, ".tiff"), native=F, convert=F, as.is=TRUE)
-img=img-imag  # darkframe subtraction (it cancels sensor black level at once)
+img=img-dark  # darkframe subtraction (it cancels sensor black level at once)
 img[img<0]=0
 
 writeTIFF(img/max(img), paste0(OUTNAME,".tif"), bits.per.sample=16,
           compression="none")
 
-imag2=imag-BLACK
-imag2[imag2<0]=0
-writeTIFF((imag2/max(imag2))^(1/2.2), paste0("darkframe.tif"),
+dark=dark-BLACK
+dark[dark<0]=0
+writeTIFF((dark/max(dark))^(1/2.2), paste0("darkframe.tif"),
           bits.per.sample=16, compression="none")
