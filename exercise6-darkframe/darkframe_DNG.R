@@ -1,7 +1,7 @@
 # Building DNG RAW files from Bayer TIFF data
 # Exercise 6: darkframe subtraction
 # www.overfitting.net
-# https://www.overfitting.net/2021/05/apilado-por-mediana-para-eliminar.html
+# https://www.overfitting.net/2021/06/reduccion-de-ruido-por-sustraccion-de.html
 
 library(tiff)
 
