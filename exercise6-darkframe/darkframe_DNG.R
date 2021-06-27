@@ -58,7 +58,6 @@ abline(v=BLACK, col='red', lty='dotted')
 img=readTIFF(paste0(NAME, 0, ".tiff"), native=F, convert=F, as.is=TRUE)
 img=img-dark  # darkframe subtraction (it cancels sensor black level at once)
 img[img<0]=0
-
 writeTIFF(img/max(img), paste0(OUTNAME,".tif"), bits.per.sample=16,
           compression="none")
 
