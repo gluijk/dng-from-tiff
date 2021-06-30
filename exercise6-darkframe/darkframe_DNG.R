@@ -63,5 +63,5 @@ writeTIFF(img/max(img), paste0(OUTNAME,".tif"), bits.per.sample=16,
 
 dark=dark-BLACK
 dark[dark<0]=0
-writeTIFF((dark/max(dark))^(1/2.2), paste0("darkframe.tif"),
-          bits.per.sample=16, compression="none")
+writeTIFF((dark/max(dark))^(1/2.2), "darkframe.tif", bits.per.sample=16,
+          compression="none")
