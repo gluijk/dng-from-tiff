@@ -59,7 +59,7 @@ writeTIFF(imgout, paste0(OUTNAME,".tif"),
 
 
 # Soft RAW histogram to measure DR
-imgdr=img+rnorm(length(img))/4000  # soften deep shadows
+imgdr=img+rnorm(length(img), sd=1/4000)  # soften deep shadows
 imgdr[imgdr<0]=0
 imgdr[imgdr>1]=1
 writeTIFF(imgdr^(1/2.2), "drhistogram.tif",
