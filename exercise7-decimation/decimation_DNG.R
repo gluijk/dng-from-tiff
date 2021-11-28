@@ -57,9 +57,18 @@ writeTIFF(imgout, paste0(OUTNAME,".tif"),
           bits.per.sample=16, compression="none")
 
 
-# Distortion
-# indices=which(col(imgout)%%150==0 | (col(imgout)+1)%%150==0)
-# imgout[indices]=1
 
-# indices=which(row(imgout)%%150==0 | (row(imgout)+1)%%150==0)
-# imgout[indices]=1
+# Soft RAW histogram to measure DR
+imgdr=img+rnorm(length(img))/4000  # soften deep shadows
+imgdr[imgdr<0]=0
+imgdr[imgdr>1]=1
+writeTIFF(imgdr^(1/2.2), "drhistogram.tif",
+          bits.per.sample=16, compression="none")
+
+
+# Distortion grid measurement
+indices=which(col(imgout)%%150==0 | (col(imgout)+1)%%150==0)
+imgout[indices]=1
+
+indices=which(row(imgout)%%150==0 | (row(imgout)+1)%%150==0)
+imgout[indices]=1
