@@ -9,8 +9,8 @@ library(tiff)
 # PARAMETERS
 NAME="rayas"  # input RAW filenames
 OUTNAME="bayer"  # output RAW composite filename
-BLACK=2046  # sensor black level
-SAT=13583
+BLACK=2046  # sensor black level (Canon 7D)
+SAT=13583  # sensor sat level (Canon 7D)
 
 # READ RAW DATA
 
