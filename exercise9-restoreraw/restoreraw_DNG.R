@@ -29,6 +29,8 @@ NROW=nrow(img2)
 
 
 # METHOD 1
+
+# G and B photosites
 i=which(!col(img2)%%8)  # affected pixels (1 out of each 8 columns)
 img2[i]=(img2[i-2*NROW]+img2[i+2*NROW])/2  # replace averaging both sides
 
@@ -44,7 +46,7 @@ img2[i]=(img2[i-2*NROW]+img2[i+2*NROW])/2
 
 # G photosites
 i=which(!col(img2)%%8 & row(img2)%%2)
-img2[i]=(img2[i-NROW-1]+img2[i-NROW+1]+img2[i+NROW-1]+img2[i-NROW+1])/4
+img2[i]=(img2[i-NROW-1]+img2[i-NROW+1]+img2[i+NROW-1]+img2[i+NROW+1])/4
 
 writeTIFF(img2, paste0(OUTNAME,"3.tif"), bits.per.sample=16,
           compression="none")
