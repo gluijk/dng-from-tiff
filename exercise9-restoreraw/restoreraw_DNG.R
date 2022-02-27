@@ -1,7 +1,7 @@
 # Building DNG RAW files from Bayer TIFF data
 # Exercise 9: RAW restoration
 # www.overfitting.net
-# https://www.overfitting.net/2021/06/reduccion-de-ruido-por-sustraccion-de.html
+# https://www.overfitting.net/2022/02/restaurando-un-archivo-raw.html
 
 library(tiff)
 
