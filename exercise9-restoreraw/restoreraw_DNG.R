@@ -54,4 +54,4 @@ writeTIFF(img2, paste0(OUTNAME,"3.tif"), bits.per.sample=16,
 
 # Before running the last part of dngmaker.bat do:
 # exiftool -overwrite_original -Activearea="0 0 3465 5202" rayas.dng
-# Size of rayas.tiff: 3465 x 5202
+# to adapt to the size of rayas.tiff: 3465 x 5202
