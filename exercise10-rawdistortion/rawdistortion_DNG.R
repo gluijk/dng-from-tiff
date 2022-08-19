@@ -1,7 +1,7 @@
 # Building DNG RAW files from Bayer TIFF data
 # Exercise 10: RAW distortion correction
 # www.overfitting.net
-# https://www.overfitting.net/2022/02/restaurando-un-archivo-raw.html
+# https://www.overfitting.net/2022/08/correccion-de-distorsion-geometrica-en.html
 
 library(tiff)
 
