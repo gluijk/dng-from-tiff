@@ -1,7 +1,7 @@
 # Building DNG RAW files from Bayer TIFF data
-# Exercise 2: mean stacking
+# Exercise 11: antimedian stacking
 # www.overfitting.net
-# https://www.overfitting.net/2021/05/apilado-por-media-simulando-iso-ultra.html
+# https://www.overfitting.net/2022/11/apilado-por-antimediana-para-replicar.html
 
 library(tiff)
 
