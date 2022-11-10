@@ -52,7 +52,7 @@ for (i in 1:N) {
 # imag=apply(img, c(1,2), cpp_med2)  # median (optimised)
 imag=apply(img, c(1,2), antimedian)  # antimedian
 
-# Fusion map and RAW data files contributions (cpp_med3 cannot be used)
+# Fusion map and RAW data files contributions
 mapafusion=imag*0
 for (i in 1:N) {
     indices=which(imag==img[,,i])
