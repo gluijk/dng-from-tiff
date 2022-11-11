@@ -17,7 +17,7 @@ OUTNAME="bayer"  # output RAW composite filename
 # RAW extraction using DCRAW: dcraw -v -d -r 1 1 1 1 -t 0 -4 -T *.dng
 img=0
 for (i in 18:(18+N-1)) {
-    img=img+readTIFF(paste0(NAME, i, ".tiff"), native=F, convert=F)
+    img=img+readTIFF(paste0(NAME, i, ".tiff"), native=FALSE, convert=FALSE)
 }
 
 # MEAN AVERAGING
