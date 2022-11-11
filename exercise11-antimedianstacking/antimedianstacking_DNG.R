@@ -67,9 +67,9 @@ for (i in 1:N) print(paste0("Contribution of ", NAME, i, ".tiff: ",
 # BUILD OUTPUT DNG
 
 # Normalize RAW data
-imag=imag-BLACK
-imag[imag<0]=0
-imag=imag/(SAT-BLACK)
+imag=imag-BLACK  # subtract black level
+imag[imag<0]=0  # clip negative values
+imag=imag/(SAT-BLACK)  # normalize to 0..1
 hist(imag, breaks=1024)
 
 if (max(imag)<1) print(paste0("Output ETTR'ed by: +",
