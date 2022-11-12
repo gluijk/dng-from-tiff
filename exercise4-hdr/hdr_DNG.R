@@ -28,7 +28,7 @@ gamma=1
 img=list()
 txt=list()
 for (i in 1:N) {
-    img[[i]]=readTIFF(paste0(NAME, i, ".tiff"), native=F, convert=F)
+    img[[i]]=readTIFF(paste0(NAME, i, ".tiff"), native=FALSE, convert=FALSE)
     txt[[i]]=paste0(NAME, i, "vs", NAME, i+1)
 }
 
