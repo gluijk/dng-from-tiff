@@ -20,10 +20,10 @@ OUTNAME="bayer"  # output RAW composite filename
 
 BLACK=512/65535  # 512 obtained by visual inspection
 
-img=readTIFF(paste0(NAME, 1, ".tiff"), native=F, convert=F)
+img=readTIFF(paste0(NAME, 1, ".tiff"), native=FALSE, convert=FALSE)
 img=array(0, c(nrow(img), ncol(img), N))
 for (i in 1:N) {
-    img[,,i]=readTIFF(paste0(NAME, i, ".tiff"), native=F, convert=F)
+    img[,,i]=readTIFF(paste0(NAME, i, ".tiff"), native=FALSE, convert=FALSE)
 }
 
 # Linearize and normalize
@@ -34,6 +34,7 @@ img=img/max(img)  # normalize 0..1
 # MAX
 # imag=apply(img, c(1,2), mean)  # c(1,2) means 1st and 2nd dimensions
 imag=apply(img, c(1,2), max)  # c(1,2) means 1st and 2nd dimensions
+# imag=apply(img, c(1,2), min)  # c(1,2) means 1st and 2nd dimensions
 
 
 # BUILD OUTPUT DNG
