@@ -17,7 +17,7 @@ OUTNAME="bayer"  # output RAW composite filename
 
 
 # READ RAW DATA
-imag=readTIFF(filenames[1], native=F, convert=F)*0
+imag=readTIFF(filenames[1], native=FALSE, convert=FALSE)*0
 NROW=as.integer(nrow(imag)/DIEZMADO)
 NCOL=as.integer(ncol(imag)/DIEZMADO)
 
@@ -37,7 +37,7 @@ for (k in 1:N) {
     print(paste0("Processing file '", filenames[k], "' (", k, "/", N,
                  ") ..."), quote=FALSE)
     
-    img=readTIFF(filenames[k], native=F, convert=F)  # as.is=TRUE
+    img=readTIFF(filenames[k], native=FALSE, convert=FALSE)  # as.is=TRUE
     img=img[1:nrow(imagcrop), 1:ncol(imagcrop)]
     
     # Basic Bayer subsampling
