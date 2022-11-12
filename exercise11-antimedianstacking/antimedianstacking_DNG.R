@@ -21,8 +21,8 @@ cppFunction('
             ')
 
 antimedian = function(x) {
-    desv = abs(x - cpp_med2(x))  # desv = abs(x-median(x))
-    return(x[which(desv == max(desv))][1])  # [1] to avoid creating lists
+    absdev = abs(x - cpp_med2(x))  # absdev = abs(x-median(x))
+    return(x[which(absdev == max(absdev))][1])  # [1] to avoid creating lists
 }
 
 
