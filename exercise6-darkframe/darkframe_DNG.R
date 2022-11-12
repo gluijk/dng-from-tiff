@@ -32,11 +32,12 @@ BLACK=512  # sensor black level (Sony A7 II)
 
 # RAW integer extraction using DCRAW: dcraw -v -D -t 0 -4 -T *.dng
 # IMPORTANT: note that -D DCRAW extraction instead of -d is used
-img=readTIFF(paste0(NAME, 1, ".tiff"), native=F, convert=F)
+img=readTIFF(paste0(NAME, 1, ".tiff"), native=FALSE, convert=FALSE)
 img=array(0, c(nrow(img), ncol(img), N))
 # Now images are read in integer mode
 for (i in 1:N) {
-    img[,,i]=readTIFF(paste0(NAME, i, ".tiff"), native=F, convert=F, as.is=TRUE)
+    img[,,i]=readTIFF(paste0(NAME, i, ".tiff"),
+                      native=FALSE, convert=FALSE, as.is=TRUE)
 }
 
 # MEAN AVERAGING 
@@ -55,7 +56,7 @@ abline(v=BLACK, col='red', lty='dotted')
 
 
 # DARKFRAME SUBTRACTION
-img=readTIFF(paste0(NAME, 0, ".tiff"), native=F, convert=F, as.is=TRUE)
+img=readTIFF(paste0(NAME, 0, ".tiff"), native=FALSE, convert=FALSE, as.is=TRUE)
 img=img-dark  # darkframe subtraction (it cancels sensor black level at once)
 img[img<0]=0
 writeTIFF(img/max(img), paste0(OUTNAME,".tif"), bits.per.sample=16,
