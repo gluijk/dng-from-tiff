@@ -49,10 +49,10 @@ OUTNAME="bayer"  # output RAW composite filename
 # READ RAW DATA
 
 # RAW extraction using DCRAW: dcraw -v -d -r 1 1 1 1 -t 0 -4 -T *.dng
-img=readTIFF(paste0(NAME, 1, ".tiff"), native=F, convert=F)
+img=readTIFF(paste0(NAME, 1, ".tiff"), native=FALSE, convert=FALSE)
 img=array(0, c(nrow(img), ncol(img), N))
 for (i in 1:N) {
-    img[,,i]=readTIFF(paste0(NAME, i, ".tiff"), native=F, convert=F)
+    img[,,i]=readTIFF(paste0(NAME, i, ".tiff"), native=FALSE, convert=FALSE)
 }
 
 # MEDIAN AVERAGING 
