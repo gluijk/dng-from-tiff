@@ -18,7 +18,8 @@ OUTNAME="bayer"  # output RAW composite filename
 # raw2.dng (Ambiente), raw3.dng (Artificial for check)
 # RAW extraction using DCRAW: dcraw -v -d -r 1 1 1 1 -t 0 -4 -T *.dng
 img=list()
-for (i in 1:N) img[[i]]=readTIFF(paste0(NAME, i, ".tiff"), native=F, convert=F)
+for (i in 1:N) img[[i]]=readTIFF(paste0(NAME, i, ".tiff"),
+                                 native=FALSE, convert=FALSE)
 
 # LINEAR SUBTRACTION
 imag=img[[1]]-img[[2]]  # (Ambiente + Artificial) - Ambiente
@@ -45,7 +46,7 @@ writeTIFF(imag2, paste0(OUTNAME,"_composite.tif"), bits.per.sample=16,
 
 
 # COLOUR TEMPERATURE EQUALIZATION
-wb=readTIFF("relativewb.tif", native=F, convert=F)  # 2 wall reference pixels
+wb=readTIFF("relativewb.tif", native=FALSE, convert=FALSE)  # 2 wall reference pixels
 wb[1,1,]=wb[1,1,]/max(wb[1,1,])
 wb[1,2,]=wb[1,2,]/max(wb[1,2,])
 mulart=wb[1,1,]/wb[1,2,]  # linear colour temperature difference
