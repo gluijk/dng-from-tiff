@@ -16,7 +16,7 @@ SAT=13583  # sensor sat level (Canon 7D)
 
 # RAW integer extraction using DCRAW: dcraw -v -D -t 0 -4 -T *.dng
 # IMPORTANT: note that -D DCRAW extraction instead of -d is used
-img=readTIFF(paste0(NAME, ".tiff"), native=F, convert=F, as.is=TRUE)
+img=readTIFF(paste0(NAME, ".tiff"), native=FALSE, convert=FALSE, as.is=TRUE)
 
 img=img-BLACK  # subtract black level
 img[img<0]=0  # clip negative values
