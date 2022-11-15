@@ -20,12 +20,12 @@ cppFunction('
             }
             ')
 
-antimedian = function(x) {
+antimedian = function(x) {  # antimedian function
     absdev = abs(x - cpp_med2(x))  # absdev = abs(x-median(x))
     x[which(absdev == max(absdev))][1]  # [1] to avoid creating lists
 }
 
-statmode = function(x) {  # statistical mode
+statmode = function(x) {  # statistical mode function
     ux=unique(x)
     ux[which.max(tabulate(match(x, ux)))]
 }
