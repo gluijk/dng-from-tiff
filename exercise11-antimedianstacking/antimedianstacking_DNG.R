@@ -22,7 +22,12 @@ cppFunction('
 
 antimedian = function(x) {
     absdev = abs(x - cpp_med2(x))  # absdev = abs(x-median(x))
-    return(x[which(absdev == max(absdev))][1])  # [1] to avoid creating lists
+    x[which(absdev == max(absdev))][1]  # [1] to avoid creating lists
+}
+
+statmode = function(x) {  # statistical mode
+    ux=unique(x)
+    ux[which.max(tabulate(match(x, ux)))]
 }
 
 
@@ -64,7 +69,36 @@ for (i in 1:N) print(paste0("Contribution of ", NAME, i, ".tiff: ",
     round(length(which(mapafusion==i))/length(mapafusion)*100,2),"%"))
 
 
+# IMPROVE FUSION MAP TO REDUCE MOVING/BAYER ARTIFACTS
+DIMX=nrow(mapafusion)
+DIMY=ncol(mapafusion)
+mapa=array(0, c(DIMX, DIMY, 9))
+
+# Calculate statistical mode over a 3x3 pixels matrix in fusion map
+mapa[2:(DIMX-1), 2:(DIMY-1), 1] = mapafusion[(2-1):(DIMX-1-1), (2-1):(DIMY-1-1)]  # -1, -1
+mapa[2:(DIMX-1), 2:(DIMY-1), 2] = mapafusion[(2):(DIMX-1), (2-1):(DIMY-1-1)]  #  0, -1
+mapa[2:(DIMX-1), 2:(DIMY-1), 3] = mapafusion[(2+1):(DIMX-1+1), (2-1):(DIMY-1-1)]  # +1, -1
+mapa[2:(DIMX-1), 2:(DIMY-1), 4] = mapafusion[(2-1):(DIMX-1-1), (2):(DIMY-1)]  # -1,  0
+mapa[2:(DIMX-1), 2:(DIMY-1), 5] = mapafusion[(2):(DIMX-1), (2):(DIMY-1)]  #  0,  0
+mapa[2:(DIMX-1), 2:(DIMY-1), 6] = mapafusion[(2+1):(DIMX-1+1), (2):(DIMY-1)]  # +1,  0
+mapa[2:(DIMX-1), 2:(DIMY-1), 7] = mapafusion[(2-1):(DIMX-1-1), (2+1):(DIMY-1+1)]  # -1, +1
+mapa[2:(DIMX-1), 2:(DIMY-1), 8] = mapafusion[(2):(DIMX-1), (2+1):(DIMY-1+1)]  #  0, +1
+mapa[2:(DIMX-1), 2:(DIMY-1), 9] = mapafusion[(2+1):(DIMX-1+1), (2+1):(DIMY-1+1)]  # +1, +1
+
+mapafusion2=apply(mapa, c(1,2), statmode)
+writeTIFF((mapafusion2-1)/(N-1), "mapafusion2.tif", # grayscale fusion map
+          bits.per.sample=8, compression="LZW")
+
+# Use new fusion map
+imag2=imag*0
+for (i in 1:N) {
+    indices=which(mapafusion2==i)
+    imag2[indices]=img[,,i][indices]
+}
+
+
 # BUILD OUTPUT DNG
+imag=imag2  # run this to use improved fusion map
 
 # Normalize RAW data
 imag=imag-BLACK  # subtract black level
