@@ -72,9 +72,10 @@ for (i in 1:N) print(paste0("Contribution of ", NAME, i, ".tiff: ",
 # IMPROVE FUSION MAP TO REDUCE MOVING/BAYER ARTIFACTS
 DIMX=nrow(mapafusion)
 DIMY=ncol(mapafusion)
-mapa=array(0, c(DIMX, DIMY, 9))
 
-# Calculate statistical mode over a 3x3 pixels matrix in fusion map
+# REFINEMENT 1: 9px mode
+# Calculate statistical mode over a 3x3 pixels matrix
+mapa=array(0, c(DIMX, DIMY, 9))
 mapa[2:(DIMX-1), 2:(DIMY-1), 1] = mapafusion[(2-1):(DIMX-1-1), (2-1):(DIMY-1-1)]  # -1, -1
 mapa[2:(DIMX-1), 2:(DIMY-1), 2] = mapafusion[(2):(DIMX-1), (2-1):(DIMY-1-1)]  #  0, -1
 mapa[2:(DIMX-1), 2:(DIMY-1), 3] = mapafusion[(2+1):(DIMX-1+1), (2-1):(DIMY-1-1)]  # +1, -1
@@ -85,7 +86,34 @@ mapa[2:(DIMX-1), 2:(DIMY-1), 7] = mapafusion[(2-1):(DIMX-1-1), (2+1):(DIMY-1+1)]
 mapa[2:(DIMX-1), 2:(DIMY-1), 8] = mapafusion[(2):(DIMX-1), (2+1):(DIMY-1+1)]  #  0, +1
 mapa[2:(DIMX-1), 2:(DIMY-1), 9] = mapafusion[(2+1):(DIMX-1+1), (2+1):(DIMY-1+1)]  # +1, +1
 
-mapafusion2=apply(mapa, c(1,2), statmode)
+# REFINEMENT 2: 21 px mode
+# Calculate statistical mode over a 3x3 pixels matrix + 12 surrounding pixels
+mapa=array(0, c(DIMX, DIMY, 9+12))
+mapa[3:(DIMX-2), 3:(DIMY-2), 1] = mapafusion[(3-1):(DIMX-2-1), (3-1):(DIMY-2-1)]  # -1, -1
+mapa[3:(DIMX-2), 3:(DIMY-2), 2] = mapafusion[(3):(DIMX-2), (3-1):(DIMY-2-1)]  #  0, -1
+mapa[3:(DIMX-2), 3:(DIMY-2), 3] = mapafusion[(3+1):(DIMX-2+1), (3-1):(DIMY-2-1)]  # +1, -1
+mapa[3:(DIMX-2), 3:(DIMY-2), 4] = mapafusion[(3-1):(DIMX-2-1), (3):(DIMY-2)]  # -1,  0
+mapa[3:(DIMX-2), 3:(DIMY-2), 5] = mapafusion[(3):(DIMX-2), (3):(DIMY-2)]  #  0,  0
+mapa[3:(DIMX-2), 3:(DIMY-2), 6] = mapafusion[(3+1):(DIMX-2+1), (3):(DIMY-2)]  # +1,  0
+mapa[3:(DIMX-2), 3:(DIMY-2), 7] = mapafusion[(3-1):(DIMX-2-1), (3+1):(DIMY-2+1)]  # -1, +1
+mapa[3:(DIMX-2), 3:(DIMY-2), 8] = mapafusion[(3):(DIMX-2), (3+1):(DIMY-2+1)]  #  0, +1
+mapa[3:(DIMX-2), 3:(DIMY-2), 9] = mapafusion[(3+1):(DIMX-2+1), (3+1):(DIMY-2+1)]  # +1, +1
+#
+mapa[3:(DIMX-2), 3:(DIMY-2), 10] = mapafusion[(3-1):(DIMX-2-1), (3-2):(DIMY-2-2)]  # -1, -2
+mapa[3:(DIMX-2), 3:(DIMY-2), 11] = mapafusion[(3):(DIMX-2), (3-2):(DIMY-2-2)]  #  0, -2
+mapa[3:(DIMX-2), 3:(DIMY-2), 12] = mapafusion[(3+1):(DIMX-2+1), (3-2):(DIMY-2-2)]  # +1, -2
+mapa[3:(DIMX-2), 3:(DIMY-2), 13] = mapafusion[(3-1):(DIMX-2-1), (3+2):(DIMY-2+2)]  # -1, +2
+mapa[3:(DIMX-2), 3:(DIMY-2), 14] = mapafusion[(3):(DIMX-2), (3+2):(DIMY-2+2)]  #  0, +2
+mapa[3:(DIMX-2), 3:(DIMY-2), 15] = mapafusion[(3+1):(DIMX-2+1), (3+2):(DIMY-2+2)]  # +1, +2
+mapa[3:(DIMX-2), 3:(DIMY-2), 16] = mapafusion[(3-2):(DIMX-2-2), (3-1):(DIMY-2-1)]  # -2, -1
+mapa[3:(DIMX-2), 3:(DIMY-2), 17] = mapafusion[(3-2):(DIMX-2-2), (3):(DIMY-2)]  #  -2, 0
+mapa[3:(DIMX-2), 3:(DIMY-2), 18] = mapafusion[(3-2):(DIMX-2-2), (3+1):(DIMY-2+1)]  # -2, +1
+mapa[3:(DIMX-2), 3:(DIMY-2), 10] = mapafusion[(3+2):(DIMX-2+2), (3-1):(DIMY-2-1)]  # +2, -1
+mapa[3:(DIMX-2), 3:(DIMY-2), 20] = mapafusion[(3+2):(DIMX-2+2), (3):(DIMY-2)]  #  +2, 0
+mapa[3:(DIMX-2), 3:(DIMY-2), 21] = mapafusion[(3+2):(DIMX-2+2), (3+1):(DIMY-2+1)]  # +2, +1
+
+
+mapafusion2=apply(mapa, c(1,2), statmode)  # 22h10
 writeTIFF((mapafusion2-1)/(N-1), "mapafusion2.tif", # grayscale fusion map
           bits.per.sample=8, compression="LZW")
 
