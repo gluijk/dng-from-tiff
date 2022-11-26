@@ -73,6 +73,7 @@ for (i in 1:N) print(paste0("Contribution of ", NAME, i, ".tiff: ",
 DIMX=nrow(mapafusion)
 DIMY=ncol(mapafusion)
 
+
 # REFINEMENT 1: 9px mode
 # Calculate statistical mode over a 3x3 pixels matrix
 mapa=array(0, c(DIMX, DIMY, 9))
@@ -85,6 +86,7 @@ mapa[2:(DIMX-1), 2:(DIMY-1), 6] = mapafusion[(2+1):(DIMX-1+1), (2):(DIMY-1)]  # 
 mapa[2:(DIMX-1), 2:(DIMY-1), 7] = mapafusion[(2-1):(DIMX-1-1), (2+1):(DIMY-1+1)]  # -1, +1
 mapa[2:(DIMX-1), 2:(DIMY-1), 8] = mapafusion[(2):(DIMX-1), (2+1):(DIMY-1+1)]  #  0, +1
 mapa[2:(DIMX-1), 2:(DIMY-1), 9] = mapafusion[(2+1):(DIMX-1+1), (2+1):(DIMY-1+1)]  # +1, +1
+mapafusion2=apply(mapa, c(1,2), statmode)
 
 # REFINEMENT 2: 21 px mode
 # Calculate statistical mode over a 3x3 pixels matrix + 12 surrounding pixels
@@ -111,13 +113,34 @@ mapa[3:(DIMX-2), 3:(DIMY-2), 18] = mapafusion[(3-2):(DIMX-2-2), (3+1):(DIMY-2+1)
 mapa[3:(DIMX-2), 3:(DIMY-2), 10] = mapafusion[(3+2):(DIMX-2+2), (3-1):(DIMY-2-1)]  # +2, -1
 mapa[3:(DIMX-2), 3:(DIMY-2), 20] = mapafusion[(3+2):(DIMX-2+2), (3):(DIMY-2)]  #  +2, 0
 mapa[3:(DIMX-2), 3:(DIMY-2), 21] = mapafusion[(3+2):(DIMX-2+2), (3+1):(DIMY-2+1)]  # +2, +1
-
-
 mapafusion2=apply(mapa, c(1,2), statmode)
+
+# REFINEMENT 3: n-px mode
+# Calculate statistical mode over arbitrary circle around pixel
+mapafusion2=mapafusion*0
+R=4  # circle radius
+R2=R^2
+for (x in (R+1):(DIMX-R)) {  # slow loop...
+    for (y in (R+1):(DIMY-R)) {
+        valores=c()
+        for (i in -R:R) {
+            for (j in -R:R) {
+                if (i*i + j*j <= R2) valores=c(valores, mapafusion[x+i, y+j])
+            }
+        }
+        mapafusion2[x,y]=statmode(valores)
+    }
+}
+
+
+mapafusion2[mapafusion2==0]=1  # rescue borders
 writeTIFF((mapafusion2-1)/(N-1), "mapafusion2.tif",  # grayscale fusion map
           bits.per.sample=8, compression="LZW")
+for (i in 1:N) print(paste0("Contribution of ", NAME, i, ".tiff: ",
+    round(length(which(mapafusion2==i))/length(mapafusion2)*100,2),"%"))
 
-# Use new fusion map
+
+# Use refined fusion map
 imag2=imag*0
 for (i in 1:N) {
     indices=which(mapafusion2==i)
