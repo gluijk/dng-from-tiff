@@ -113,8 +113,8 @@ mapa[3:(DIMX-2), 3:(DIMY-2), 20] = mapafusion[(3+2):(DIMX-2+2), (3):(DIMY-2)]  #
 mapa[3:(DIMX-2), 3:(DIMY-2), 21] = mapafusion[(3+2):(DIMX-2+2), (3+1):(DIMY-2+1)]  # +2, +1
 
 
-mapafusion2=apply(mapa, c(1,2), statmode)  # 22h10
-writeTIFF((mapafusion2-1)/(N-1), "mapafusion2.tif", # grayscale fusion map
+mapafusion2=apply(mapa, c(1,2), statmode)
+writeTIFF((mapafusion2-1)/(N-1), "mapafusion2.tif",  # grayscale fusion map
           bits.per.sample=8, compression="LZW")
 
 # Use new fusion map
