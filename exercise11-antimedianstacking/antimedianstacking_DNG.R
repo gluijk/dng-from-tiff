@@ -88,7 +88,7 @@ mapa[2:(DIMX-1), 2:(DIMY-1), 8] = mapafusion[(2):(DIMX-1), (2+1):(DIMY-1+1)]  # 
 mapa[2:(DIMX-1), 2:(DIMY-1), 9] = mapafusion[(2+1):(DIMX-1+1), (2+1):(DIMY-1+1)]  # +1, +1
 mapafusion2=apply(mapa, c(1,2), statmode)
 
-# REFINEMENT 2: 21 px mode
+# REFINEMENT 2: 21px mode
 # Calculate statistical mode over a 3x3 pixels matrix + 12 surrounding pixels
 mapa=array(0, c(DIMX, DIMY, 9+12))
 mapa[3:(DIMX-2), 3:(DIMY-2), 1] = mapafusion[(3-1):(DIMX-2-1), (3-1):(DIMY-2-1)]  # -1, -1
@@ -115,8 +115,8 @@ mapa[3:(DIMX-2), 3:(DIMY-2), 20] = mapafusion[(3+2):(DIMX-2+2), (3):(DIMY-2)]  #
 mapa[3:(DIMX-2), 3:(DIMY-2), 21] = mapafusion[(3+2):(DIMX-2+2), (3+1):(DIMY-2+1)]  # +2, +1
 mapafusion2=apply(mapa, c(1,2), statmode)
 
-# REFINEMENT 3: n-px mode
-# Calculate statistical mode over arbitrary circle around pixel
+# REFINEMENT 3: 49px mode
+# Calculate statistical mode over a R=4 pixles circle
 mapafusion2=mapafusion*0
 R=4  # circle radius
 R2=R^2
