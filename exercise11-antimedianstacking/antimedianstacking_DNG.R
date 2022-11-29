@@ -120,8 +120,8 @@ mapafusion2=apply(mapa, c(1,2), statmode)
 mapafusion2=mapafusion*0
 R=4  # circle radius
 R2=R^2
-for (x in (R+1):(DIMX-R)) {  # slow loop...
-    for (y in (R+1):(DIMY-R)) {
+for (x in (1+R):(DIMX-R)) {  # slow loop...
+    for (y in (1+R):(DIMY-R)) {
         valores=c()
         for (i in -R:R) {
             for (j in -R:R) {
