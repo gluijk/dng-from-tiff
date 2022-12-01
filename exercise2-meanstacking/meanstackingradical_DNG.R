@@ -23,7 +23,7 @@ img=0
 for (i in INIT:(INIT+N-1)) {
     name=paste0(NAME, i, ".tiff")
     img=img+readTIFF(name, native=FALSE, convert=FALSE, as.is=TRUE)
-    print(paste0(i-672+1, " / ", N, " added ", name))
+    print(paste0(i-INIT+1, " / ", N, " added ", name))
 }
 
 # MEAN AVERAGING
