@@ -35,6 +35,7 @@ BLACK=512  # sensor black level (Sony A7 II)
 img=readTIFF(paste0(NAME, 1, ".tiff"), native=FALSE, convert=FALSE)
 img=array(0, c(nrow(img), ncol(img), N))
 # Now images are read in integer mode
+# "raw1.tiff" ... "raw10.tiff" are the 10 darkframes to average
 for (i in 1:N) {
     img[,,i]=readTIFF(paste0(NAME, i, ".tiff"),
                       native=FALSE, convert=FALSE, as.is=TRUE)
@@ -56,6 +57,7 @@ abline(v=BLACK, col='red', lty='dotted')
 
 
 # DARKFRAME SUBTRACTION
+# "raw0.tiff" is the original scene file
 img=readTIFF(paste0(NAME, 0, ".tiff"), native=FALSE, convert=FALSE, as.is=TRUE)
 img=img-dark  # darkframe subtraction (it cancels sensor black level at once)
 img[img<0]=0
