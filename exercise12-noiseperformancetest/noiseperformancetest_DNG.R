@@ -1,7 +1,7 @@
 # Building DNG RAW files from Bayer TIFF data
 # Exercise 12: camera sensor noise performance test
 # www.overfitting.net
-# https://www.overfitting.net/2021/11/diezmado-de-bits-en-raw.html
+# https://www.overfitting.net/2023/10/test-raw-de-rendimiento-en-ruido-para.html
 
 library(tiff)
 
