@@ -54,13 +54,11 @@ for (i in 1:NISOS) {  # 9 ISO values
         writeTIFF(crop, paste0(NAME, "_crop.tif"),
                   bits.per.sample=16, compression="LZW")
         
-        # crop[45:(45+60-1)+254, 507:(507+60-1)-166]=1
         imgout[(1+(j-1)*DIMY+DY):(j*DIMY+DY),
                (1+(i-1)*DIMX+DX):(i*DIMX+DX)]=crop
 
         # SNR calculations over 60x60 pixels Bayer patch (1800 samples)
-        patch=crop[45:(45+60-1), 507:(507+60-1)]  # green patch
-        # patch=crop[45:(45+60-1)+254, 507:(507+60-1)-166]  # black patch
+        patch=crop[49:(49+60-1), 507:(507+60-1)]  # green patch
         indices=which(( row(patch)%%2 & !col(patch)%%2) |
                       (!row(patch)%%2 &  col(patch)%%2))  # G1 and G2 in RG/GB
         S[j,i]=mean(patch[indices])  # S=mean
@@ -73,7 +71,7 @@ for (i in 1:NISOS) {  # 9 ISO values
 }
 
 # Write labels and text
-labels=readTIFF(paste0("labels.tif"))
+labels=readTIFF("labels.tif")
 indices=which(labels>imgout)
 imgout[indices]=labels[indices]
 
@@ -98,6 +96,6 @@ for (i in 1:(NISOS-1)) lines(20*log10(SNR[,i]), type='o', col='red')
 axis(1, at=1:9, cex.axis=0.8, labels=c('ETTR', paste0(-1:-8,'EV')))
 
 
-
-
-
+# Set BaselineExposure to compensate for ETTR: +0.35EV (original) -> -1.05EV
+# exiftool -overwrite_original -baselineexposure=-1.05 DSC05297.dng
+# exiftool -overwrite_original -baselineexposure=-1.05 noiseperformancetest.dng
