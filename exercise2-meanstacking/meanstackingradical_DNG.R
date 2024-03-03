@@ -17,7 +17,7 @@ SAT=16383  # sensor sat level (Sony A7 II)
 
 # READ RAW DATA
 
-# RAW integer extraction using DCRAW: dcraw -v -D -4 -T *.dng
+# RAW integer extraction using DCRAW: dcraw -v -D -t 0 -4 -T *.dng
 # IMPORTANT: note that -D DCRAW extraction instead of -d is used
 img=0
 for (i in INIT:(INIT+N-1)) {
