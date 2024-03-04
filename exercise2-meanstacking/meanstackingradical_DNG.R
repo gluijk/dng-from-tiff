@@ -9,7 +9,7 @@ library(tiff)
 # PARAMETERS
 N=265  # number of RAW files to merge
 NAME="DSC04"  # input RAW filenames
-INIT=672
+INIT=672  # first file
 OUTNAME="bayer"  # output RAW composite filename
 BLACK=512  # sensor black level (Sony A7 II)
 SAT=16383  # sensor sat level (Sony A7 II)
@@ -20,10 +20,10 @@ SAT=16383  # sensor sat level (Sony A7 II)
 # RAW integer extraction using DCRAW: dcraw -v -D -t 0 -4 -T *.dng
 # IMPORTANT: note that -D DCRAW extraction instead of -d is used
 img=0
-for (i in INIT:(INIT+N-1)) {
-    name=paste0(NAME, i, ".tiff")
+for (i in 1:N) {
+    name=paste0(NAME, i+INIT-1, ".tiff")
     img=img+readTIFF(name, native=FALSE, convert=FALSE, as.is=TRUE)
-    print(paste0(i-INIT+1, " / ", N, " added ", name))
+    print(paste0(i, " / ", N, " added ", name))
 }
 
 # MEAN AVERAGING
@@ -39,6 +39,6 @@ img=img/(SAT-BLACK)  # normalize to 0..1
 hist(img, breaks=1024)
 
 if (max(img)<1) print(paste0("Output ETTR'ed by: +",
-                              round(-log(max(img),2),2), "EV"))
+                             round(-log(max(img),2),2), "EV"))
 writeTIFF(img/max(img), paste0(OUTNAME,".tif"), bits.per.sample=16,
           compression="none")
