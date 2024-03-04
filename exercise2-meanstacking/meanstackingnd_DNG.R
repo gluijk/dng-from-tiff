@@ -7,7 +7,7 @@ library(tiff)
 
 
 # PARAMETERS
-N=14
+N=14  # number of RAW files to merge
 NAME="DSC0"  # input RAW filenames
 INIT=5408
 OUTNAME="bayer"  # output RAW composite filename
