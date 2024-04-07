@@ -102,9 +102,9 @@ for (i in 1:N) print(paste0("Contribution of ", NAME, i, ".tiff: ",
 
 # Bit decimation (Optional)
 # 10, 12, 14 bits versions -> 0..1023, 0..4095, 0..16383 levels
-for (bits in seq(10,14,2)) {
+for (bits in seq(10, 12, 14)) {
     hdrdec=round(hdr/max(hdr)*(2^bits-1))  # round data into 2^bits int values
     writeTIFF((hdrdec/max(hdrdec))^(1/gamma),
-              paste0(OUTNAME,"_",bits,"bits.tif"),
+              paste0(OUTNAME, "_", bits, "bits.tif"),
               bits.per.sample=16, compression="none")
 }
