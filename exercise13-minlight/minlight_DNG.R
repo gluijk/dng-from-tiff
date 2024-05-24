@@ -31,7 +31,7 @@ img=img-BLACK  # linearize
 img[img<0]=0  # clip to 0 negative values
 img=img/max(img)  # normalize 0..1
 
-# MAX
+# MIN
 imag=apply(img, c(1,2), min)  # c(1,2) means 1st and 2nd dimensions
 # imag=apply(img, c(1,2), mean)  # c(1,2) means 1st and 2nd dimensions
 # imag=apply(img, c(1,2), max)  # c(1,2) means 1st and 2nd dimensions
