@@ -18,7 +18,9 @@ cppFunction('
             std::nth_element(x.begin(), x.begin() + n, x.end());
             
             if (x.size() % 2) return x[n]; 
-            return (*std::max_element(x.begin(), x.begin() + n) + x[n]) / 2.;
+            // return (*std::max_element(x.begin(), x.begin() + n) + x[n]) / 2.;
+            // This is simpler:
+            return (x[n-1] + x[n]) / 2.;
             }
             ')
 
@@ -29,7 +31,7 @@ cppFunction('
             std::nth_element(x.begin(), x.begin() + n, x.end());
             
             if (x.size() % 2) return x[n]; 
-            return (*std::max_element(x.begin(), x.begin() + n) + x[n]) / 2.;
+            return (x[n-1] + x[n]) / 2.;
             }
             ')
 
