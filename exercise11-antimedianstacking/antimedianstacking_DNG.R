@@ -24,7 +24,7 @@ cppFunction('
 
 antimedian = function(x) {  # antimedian function
     absdev = abs(x - cpp_med2(x))  # absdev = abs(x-median(x))
-    x[which(absdev == max(absdev))][1]  # [1] to avoid creating lists
+    x[absdev == max(absdev)][1]  # [1] to return single value
 }
 
 statmode = function(x) {  # statistical mode function
