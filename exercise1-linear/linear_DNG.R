@@ -26,7 +26,7 @@ imag=img[[1]]-img[[2]]  # (Ambiente + Artificial) - Ambiente
 imag[imag<0]=0  # clip negative subtractions
 
 # BUILD OUTPUT DNG
-writeTIFF(imag, paste0(OUTNAME,".tif"), bits.per.sample=16,
+writeTIFF(imag, paste0(OUTNAME, ".tif"), bits.per.sample=16,
           compression="none")
 
 
