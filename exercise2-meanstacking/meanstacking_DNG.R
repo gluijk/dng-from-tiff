@@ -29,5 +29,5 @@ img=img/N
 # BUILD OUTPUT DNG
 if (max(img)<1) print(paste0("Output ETTR'ed by: +",
                               round(-log(max(img),2),2), "EV"))
-writeTIFF(img/max(img), paste0(OUTNAME, ".tif"), bits.per.sample=16,
+writeTIFF(img/max(img), paste0(OUTNAME,".tif"), bits.per.sample=16,
           compression="none")
