@@ -20,21 +20,18 @@ OUTNAME="bayer"  # output RAW composite filename
 
 BLACK=512/65535  # 512 obtained by visual inspection
 
-img=readTIFF(paste0(NAME, 1, ".tiff"), native=FALSE, convert=FALSE)
-img=array(0, c(nrow(img), ncol(img), N))
-for (i in 1:N) {
-    img[,,i]=readTIFF(paste0(NAME, i, ".tiff"), native=FALSE, convert=FALSE)
+imag=readTIFF(paste0(NAME, 1, ".tiff"), native=FALSE, convert=FALSE)
+mapafusion=imag*0+1
+for (i in 2:N) {
+    img=readTIFF(paste0(NAME, i, ".tiff"), native=FALSE, convert=FALSE)
+    indices=which(img>imag)  # keep any higher value
+    imag[indices]=img[indices]
+    mapafusion[indices]=i
 }
 
 # Linearize and normalize
-img=img-BLACK  # linearize
-img[img<0]=0  # clip to 0 negative values
-img=img/max(img)  # normalize 0..1
-
-# MAX
-# imag=apply(img, c(1,2), mean)  # c(1,2) means 1st and 2nd dimensions
-imag=apply(img, c(1,2), max)  # c(1,2) means 1st and 2nd dimensions
-# imag=apply(img, c(1,2), min)  # c(1,2) means 1st and 2nd dimensions
+imag=imag-BLACK  # linearize
+imag[imag<0]=0  # clip to 0 negative values
 
 
 # BUILD OUTPUT DNG
@@ -42,3 +39,9 @@ if (max(imag)<1) print(paste0("Output ETTR'ed by: +",
                              round(-log(max(imag),2),2), "EV"))
 writeTIFF(imag/max(imag), paste0(OUTNAME,".tif"), bits.per.sample=16,
           compression="none")
+
+# Fusion map and RAW data files contributions
+writeTIFF((mapafusion-1)/(N-1), "mapafusion.tif",  # grayscale fusion map
+          bits.per.sample=8, compression="LZW")
+for (i in 1:N) print(paste0("Contribution of ", NAME, i, ".tiff: ",
+                            round(length(which(mapafusion==i))/length(mapafusion)*100,2),"%"))
