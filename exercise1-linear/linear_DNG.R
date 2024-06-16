@@ -37,7 +37,7 @@ INITCOL=3515
 imag2[,1:DIMTHIRD]=img[[1]][,INITCOL:(INITCOL+DIMTHIRD-1)]
 imag2[,(DIMTHIRD+1):(2*DIMTHIRD)]=img[[2]][,INITCOL:(INITCOL+DIMTHIRD-1)]
 imag2[,(2*DIMTHIRD+1):(3*DIMTHIRD)]=img[[3]][,INITCOL:(INITCOL+DIMTHIRD-1)]
-writeTIFF(imag2, paste0(OUTNAME,"_composite.tif"), bits.per.sample=16,
+writeTIFF(imag2, paste0(OUTNAME, "_composite.tif"), bits.per.sample=16,
           compression="none")
 
 # Set DNG effective size to 6048x4024 (same as DCRAW output):
@@ -63,5 +63,5 @@ imag3=imag3+img[[2]]  # scaled Artificial + Ambiente
 imag3[imag3>1]=1
 
 # BUILD OUTPUT DNG
-writeTIFF(imag3, paste0(OUTNAME,"_whitebalanced.tif"), bits.per.sample=16,
+writeTIFF(imag3, paste0(OUTNAME, "_whitebalanced.tif"), bits.per.sample=16,
           compression="none")
